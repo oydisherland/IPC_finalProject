@@ -1,0 +1,92 @@
+#!/bin/bash
+# Job mergeSort
+#PBS -N mergeSort
+# Output files
+#PBS -o ./figure9.o
+#PBS -e ./figure9.e
+# Queue mergeSort
+#PBS -q short_cpuQ
+# Set the maximum wall time
+#PBS -l walltime=00:10:00
+# Number of nodes, cpus, threads and amount of memory
+#PBS -l select=1:ncpus=64:ompthreads=64:mem=10gb
+# Mail information
+#PBS -m abe
+#PBS -M oeydis.herland@unitn.it
+
+# Modules for C and mpi
+module load gcc91
+module load mpich-3.2.1--gcc-9.1.0
+
+# To check the architecture
+lscpu
+
+# Select the working directory
+# ---CHANGE THE LINE BELOW---
+cd /home/oeydis.herland/finalProject/differentArrays
+
+
+###___Randomly sorted___###
+echo "MERGESORT - RANDOMLY SORTED"
+mpicc MPI_mergeSort.c -o out -lm
+
+mpiexec -np 32 ./out
+mpiexec -np 32 ./out
+mpiexec -np 32 ./out
+
+###___Sorted___###
+echo "MERGESORT - SORTED"
+mpicc MPI_mergeSort_Sorted.c -o out -lm
+
+mpiexec -np 32 ./out
+mpiexec -np 32 ./out
+mpiexec -np 32 ./out
+
+###___Reversed sorted___###
+echo "MERGESORT - REVERSED SORTED"
+mpicc MPI_mergeSort_Reversed.c -o out -lm
+
+mpiexec -np 32 ./out
+mpiexec -np 32 ./out
+mpiexec -np 32 ./out
+
+###___Almost sorted___###
+echo "MERGESORT - ALMOST SORTED"
+mpicc MPI_mergeSort_almostSorted.c -o out -lm
+
+mpiexec -np 32 ./out
+mpiexec -np 32 ./out
+mpiexec -np 32 ./out
+
+
+###___Randomly sorted___###
+echo "QUICKSORT - RANDOMLY SORTED"
+mpicc MPI_tt_random.c -o r.out -lm
+
+mpiexec -np 32 ./r.out
+mpiexec -np 32 ./r.out
+mpiexec -np 32 ./r.out
+
+###___Sorted___###
+echo "QUICKSORT - SORTED"
+mpicc MPI_tt_sorted.c -o s.out -lm
+
+mpiexec -np 32 ./r.out
+mpiexec -np 32 ./r.out
+mpiexec -np 32 ./r.out
+
+###___Reversed sorted___###
+echo "QUICKSORT - REVERSED SORTED"
+mpicc MPI_tt_oppositeSorted.c -o os.out -lm
+
+mpiexec -np 32 ./r.out
+mpiexec -np 32 ./r.out
+mpiexec -np 32 ./r.out
+
+###___Almost sorted___###
+echo "QUICKSORT - ALMOST SORTED"
+mpicc MPI_tt_almostSorted.c -o as.out -lm
+
+mpiexec -np 32 ./r.out
+mpiexec -np 32 ./r.out
+mpiexec -np 32 ./r.out

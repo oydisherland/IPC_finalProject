@@ -1,0 +1,74 @@
+#!/bin/bash
+# Job mergeSort
+#PBS -N mergeSort
+# Output files
+#PBS -o ./figure3.o
+#PBS -e ./figure3.e
+# Queue mergeSort
+#PBS -q short_cpuQ
+# Set the maximum wall time
+#PBS -l walltime=00:50:00
+# Number of nodes, cpus, threads and amount of memory
+#PBS -l select=1:ncpus=64:ompthreads=64:mem=10gb
+# Mail information
+#PBS -m abe
+#PBS -M oeydis.herland@unitn.it
+
+# Modules for C and mpi
+module load gcc91
+module load mpich-3.2.1--gcc-9.1.0
+
+# To check the architecture
+lscpu
+
+# Select the working directory 
+#--CHANGE THE LINE BELOW ---
+cd /home/oeydis.herland/finalProject/tests
+
+
+###___SEQ CODE___###
+echo "SEQUENTIAL"
+gcc mergeSort.c -o out -lm
+
+./out
+./out
+
+
+###___OMP CODE___###
+echo "OMP"
+gcc OMP_mergeSort.c -o out -fopenmp
+
+export OMP_NUM_THREADS=1; ./out
+export OMP_NUM_THREADS=1; ./out
+export OMP_NUM_THREADS=2; ./out
+export OMP_NUM_THREADS=2; ./out
+export OMP_NUM_THREADS=4; ./out
+export OMP_NUM_THREADS=4; ./out
+export OMP_NUM_THREADS=8; ./out
+export OMP_NUM_THREADS=8; ./out
+export OMP_NUM_THREADS=16; ./out
+export OMP_NUM_THREADS=16; ./out
+export OMP_NUM_THREADS=32; ./out
+export OMP_NUM_THREADS=32; ./out
+export OMP_NUM_THREADS=64; ./out
+export OMP_NUM_THREADS=64; ./out
+
+###___MPI CODE___###
+echo "MPI"
+mpicc MPI_mergeSort.c -o out -lm
+
+mpiexec -np 1 ./out
+mpiexec -np 1 ./out
+mpiexec -np 2 ./out
+mpiexec -np 2 ./out
+mpiexec -np 4 ./out
+mpiexec -np 4 ./out
+mpiexec -np 8 ./out
+mpiexec -np 8 ./out
+mpiexec -np 16 ./out
+mpiexec -np 16 ./out
+mpiexec -np 32 ./out
+mpiexec -np 32 ./out
+mpiexec -np 64 ./out
+mpiexec -np 64 ./out
+

@@ -1,0 +1,86 @@
+#!/bin/bash
+# Job ws_64
+#PBS -N ws_64
+# Output files
+#PBS -o ./figure7.o
+#PBS -e ./figure7.e
+# Queue name
+#PBS -q short_cpuQ
+# Set the maximum wall time
+#PBS -l walltime=0:20:00
+# Number of nodes, cpus, mpi processors and amount of memory
+#PBS -l select=1:ncpus=4:mpiprocs=4:mem=1mb
+# Mail information
+#PBS -m abe
+#PBS -M anne.sikkerboel@unitn.it
+
+# Modules for C and MPI
+module load gcc91
+module load mpich-3.2.1--gcc-9.1.0
+
+gcc() {
+    gcc-9.1.0 "$@"
+}
+gcc --version
+mpicc --version
+
+# To check the architecture
+lscpu
+
+# Select the working directory
+# ---CHANGE THE LINE BELOW---
+cd /home/oeydis.herland/finalProject/amCode/time_tests/Directives
+
+# Before running the code should be compiled
+echo "OMP_tt_v1.c"
+
+gcc -fopenmp OMP_tt_v1.c -o quickSortV1.out -lm
+
+export OMP_NUM_THREADS=8; ./quickSortV1.out
+export OMP_NUM_THREADS=8; ./quickSortV1.out
+export OMP_NUM_THREADS=8; ./quickSortV1.out
+export OMP_NUM_THREADS=8; ./quickSortV1.out
+
+echo "OMP_tt_v2.c"
+gcc -fopenmp OMP_tt_v2.c -o quickSortV2.out -lm
+
+export OMP_NUM_THREADS=8; ./quickSortV2.out
+export OMP_NUM_THREADS=8; ./quickSortV2.out
+export OMP_NUM_THREADS=8; ./quickSortV2.out
+export OMP_NUM_THREADS=8; ./quickSortV2.out
+
+echo "OMP_tt_v3.c"
+gcc -fopenmp OMP_tt_v3.c -o quickSortV3.out -lm
+
+export OMP_NUM_THREADS=8; ./quickSortV3.out
+export OMP_NUM_THREADS=8; ./quickSortV3.out
+export OMP_NUM_THREADS=8; ./quickSortV3.out
+export OMP_NUM_THREADS=8; ./quickSortV3.out
+
+echo "OMP_tt_v4.c"
+gcc -fopenmp OMP_tt_v4.c -o quickSortV4.out -lm
+
+export OMP_NUM_THREADS=8; ./quickSortV4.out
+export OMP_NUM_THREADS=8; ./quickSortV4.out
+export OMP_NUM_THREADS=8; ./quickSortV4.out
+export OMP_NUM_THREADS=8; ./quickSortV4.out
+
+echo "OMP_tt_v5.c"
+gcc -fopenmp OMP_tt_v5.c -o quickSortV5.out -lm
+
+export OMP_NUM_THREADS=8; ./quickSortV5.out
+export OMP_NUM_THREADS=8; ./quickSortV5.out
+export OMP_NUM_THREADS=8; ./quickSortV5.out
+export OMP_NUM_THREADS=8; ./quickSortV5.out
+
+echo "OMP_tt_v1_partition.c"
+gcc -fopenmp OMP_tt_v1_partition.c -o quickSortV6.out -lm
+
+export OMP_NUM_THREADS=8; ./quickSortV6.out
+export OMP_NUM_THREADS=8; ./quickSortV6.out
+export OMP_NUM_THREADS=8; ./quickSortV6.out
+export OMP_NUM_THREADS=8; ./quickSortV6.out
+
+
+# If you set the number of mpi processors in line 12, here it is enough to type
+# mpiexec ./code.out

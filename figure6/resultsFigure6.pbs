@@ -1,0 +1,74 @@
+#!/bin/bash
+# Job ws_64
+#PBS -N ws_64
+# Output files
+#PBS -o ./figure6.o
+#PBS -e ./figure6.e
+# Queue name
+#PBS -q short_cpuQ
+# Set the maximum wall time
+#PBS -l walltime=0:20:00
+# Number of nodes, cpus, mpi processors and amount of memory
+#PBS -l select=1:ncpus=4:mpiprocs=4:mem=1mb
+# Mail information
+#PBS -m abe
+#PBS -M anne.sikkerboel@unitn.it
+
+# Modules for C and MPI
+module load gcc91
+module load mpich-3.2.1--gcc-9.1.0
+
+gcc() {
+    gcc-9.1.0 "$@"
+}
+gcc --version
+mpicc --version
+
+# To check the architecture
+lscpu
+
+# Select the working directory
+# ---CHANGE THE LINE BELOW---
+cd /home/oeydis.herland/finalProject/amCode
+
+# Before running the code should be compiled
+
+echo "OMP QUICKMERGESORT"
+gcc -fopenmp OMP_quickMerge.c -o quickSortV1.out -lm
+
+export OMP_NUM_THREADS=1; ./quickSortV1.out
+export OMP_NUM_THREADS=1; ./quickSortV1.out
+export OMP_NUM_THREADS=2; ./quickSortV1.out
+export OMP_NUM_THREADS=2; ./quickSortV1.out
+export OMP_NUM_THREADS=4; ./quickSortV1.out
+export OMP_NUM_THREADS=4; ./quickSortV1.out
+export OMP_NUM_THREADS=8; ./quickSortV1.out
+export OMP_NUM_THREADS=8; ./quickSortV1.out
+export OMP_NUM_THREADS=16; ./quickSortV1.out
+export OMP_NUM_THREADS=16; ./quickSortV1.out
+export OMP_NUM_THREADS=32; ./quickSortV1.out
+export OMP_NUM_THREADS=32; ./quickSortV1.out
+export OMP_NUM_THREADS=64; ./quickSortV1.out
+export OMP_NUM_THREADS=64; ./quickSortV1.out
+
+
+echo "MPI QUICKMERGESORT"
+
+mpicc MPI_quickMerge.c -o ws_64.out -lm
+
+mpiexec -np 1 ./ws_64.out
+mpiexec -np 1 ./ws_64.out
+mpiexec -np 2 ./ws_64.out
+mpiexec -np 2 ./ws_64.out
+mpiexec -np 4 ./ws_64.out
+mpiexec -np 4 ./ws_64.out
+mpiexec -np 8 ./ws_64.out
+mpiexec -np 8 ./ws_64.out
+mpiexec -np 16 ./ws_64.out
+mpiexec -np 16 ./ws_64.out
+mpiexec -np 32 ./ws_64.out
+mpiexec -np 32 ./ws_64.out
+mpiexec -np 64 ./ws_64.out
+mpiexec -np 64 ./ws_64.out
+# If you set the number of mpi processors in line 12, here it is enough to type
+# mpiexec ./code.out
